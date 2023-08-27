@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Candidate 1",
+    "tech": ["apple", "android", "windows"],
+    "date": "12.Jan.2021",
+    "progress": 30
+  },
+  {
+    "name": "Candidate 2",
+    "tech": ["apple"],
+    "date": "21.Feb.2021",
+    "progress": 30
+  },
+  {
+    "name": "Candidate 3",
+    "tech": ["apple", "windows"],
+    "date": "13.Mar.2021",
+    "progress": 30
+  },
+  {
+    "name": "Candidate 4",
+    "tech": ["apple", "android", "windows"],
+    "date": "24.Jan.2021",
+    "progress": 30
+  },
+  {
+    "name": "Candidate 4",
+    "tech": ["apple", "windows"],
+    "date": "Oct 24, 2022",
+    "progress": 30
+  },
+  {
+    "name": "Candidate 5",
+    "tech": ["apple", "android", "windows"],
+    "date": "Oct 24, 2022",
+    "progress": 30
+  }
+]
