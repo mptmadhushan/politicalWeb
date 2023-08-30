@@ -4,7 +4,7 @@ import { FiAlignJustify } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import navbarimage from "assets/img/layout/Navbar.png";
 import { BsArrowBarUp } from "react-icons/bs";
-import { FiSearch } from "react-icons/fi";
+import { FiUser } from "react-icons/fi";
 import { RiMoonFill, RiSunFill } from "react-icons/ri";
 import {
   IoMdNotificationsOutline,
@@ -15,6 +15,7 @@ import avatar from "assets/img/avatars/avatar4.png";
 const Navbar = (props) => {
   const { onOpenSidenav, brandText } = props;
   const [darkmode, setDarkmode] = React.useState(false);
+  let imageArr = localStorage.getItem("user");
 
   return (
     <nav className="sticky top-4 z-40 flex flex-row flex-wrap items-center justify-between rounded-xl bg-white/10 p-2 backdrop-blur-xl dark:bg-[#0b14374d]">
@@ -50,11 +51,12 @@ const Navbar = (props) => {
       <div className="relative mt-[3px] flex h-[61px] w-[355px] flex-grow items-center justify-around gap-2 rounded-full bg-white px-2 py-2 shadow-xl shadow-shadow-500 dark:!bg-navy-800 dark:shadow-none md:w-[365px] md:flex-grow-0 md:gap-1 xl:w-[365px] xl:gap-2">
         <div className="flex h-full items-center rounded-full bg-lightPrimary text-navy-700 dark:bg-navy-900 dark:text-white xl:w-[225px]">
           <p className="pl-3 pr-2 text-xl">
-            <FiSearch className="h-4 w-4 text-gray-400 dark:text-white" />
+            <FiUser className="h-4 w-4 text-gray-400 dark:text-white" />
           </p>
           <input
+            disabled
             type="text"
-            placeholder="Search..."
+            placeholder={imageArr}
             class="block h-full w-full rounded-full bg-lightPrimary text-sm font-medium text-navy-700 outline-none placeholder:!text-gray-400 dark:bg-navy-900 dark:text-white dark:placeholder:!text-white sm:w-fit"
           />
         </div>
@@ -65,7 +67,7 @@ const Navbar = (props) => {
           <FiAlignJustify className="h-5 w-5" />
         </span>
         {/* start Notification */}
-        <Dropdown
+        {/* <Dropdown
           button={
             <p className="cursor-pointer">
               <IoMdNotificationsOutline className="h-4 w-4 text-gray-600 dark:text-white" />
@@ -113,9 +115,9 @@ const Navbar = (props) => {
             </div>
           }
           classNames={"py-2 top-4 -left-[230px] md:-left-[440px] w-max"}
-        />
+        /> */}
         {/* start Horizon PRO */}
-        <Dropdown
+        {/* <Dropdown
           button={
             <p className="cursor-pointer">
               <IoMdInformationCircleOutline className="h-4 w-4 text-gray-600 dark:text-white" />
@@ -156,7 +158,7 @@ const Navbar = (props) => {
           }
           classNames={"py-2 top-6 -left-[250px] md:-left-[330px] w-max"}
           animation="origin-[75%_0%] md:origin-top-right transition-all duration-300 ease-in-out"
-        />
+        /> */}
         <div
           className="cursor-pointer text-gray-600"
           onClick={() => {

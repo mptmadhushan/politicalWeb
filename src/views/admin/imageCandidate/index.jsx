@@ -31,20 +31,23 @@ const Dashboard = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [inputValue, setInputValue] = React.useState("");
   const [dataArr, setDataArr] = React.useState("");
+  const [selectedCandidate, setSelectedCandidate] = React.useState("");
+
 
   const onChangeHandler = (event) => {
     setInputValue(event.target.value);
   };
 
-  useEffect(async () => {
+  useEffect(() => {
+    onLoadApp();
+  }, []);
+  const onLoadApp = async () => {
     let imageArr = await JSON.parse(localStorage.getItem("imageData"));
-    var imageData = imageArr.filter((elements) => {
+    var imageData = imageArr?.filter((elements) => {
       return elements !== null;
     });
     setDataArr(imageData);
-    console.log("🚀 ~ file: index.jsx:43 ~ useEffect ~ imageArr:", imageData);
-  }, []);
-
+  };
   const handleFileSelect = (event) => {
     let value = URL.createObjectURL(event.target.files[0]);
     console.log("🚀 ~ file: index.jsx:55:", value);
@@ -65,44 +68,64 @@ const Dashboard = () => {
   const changeOnClick = (e) => {
     SaveDataToLocalStorage();
     const reqData = {
-      image_path: selectedFile,
+      image_path: `D:/SLIIT/YEAR4/Semester 1/Research Project/coding/Politician Evaluation System/data/Categories/${selectedFile.name}`,
     };
-    const resData = {
-      // userName: inputValue,
-      // predicted: res.predicted_class_name,
-      userName: "inputValue",
-      predicted: "res.predicted_class_name",
-    };
-    SaveDataToLocalStorage(resData);
-    // axios
-    //   .post(`http://127.0.0.1:8000/api/v1/image_classifier`, reqData)
-    //   .then((res) => {
-    //     console.log("🚀 ~ file: index.jsx:68 ~ .then ~ res:", res)
-    //     const resData = {
-    //       // userName: inputValue,
-    //       // predicted: res.predicted_class_name,
-    //        userName: "inputValue",
-    //       predicted: "res.predicted_class_name",
-    //     };
-    //     SaveDataToLocalStorage(resData)
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    // const resData = {
+    //   // userName: inputValue,
+    //   // predicted: res.predicted_class_name,
+    //   userName: "inputValue",
+    //   predicted: "res.predicted_class_name",
+    // };
+    // SaveDataToLocalStorage(resData);
+    axios
+      .post(`http://127.0.0.1:8000/api/v1/image_classifier`, reqData)
+      .then((res) => {
+        console.log("🚀 ~ file: index.jsx:68 ~ .then ~ res:", res);
+        const resData = {
+          userName: "inputValue",
+          predicted: "res.predicted_class_name",
+        };
+        SaveDataToLocalStorage(resData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     // history.push("/Landing");
   };
+  const handleAddrTypeChange = (e) => setSelectedCandidate(e.target.value);
+  const arr = [
+    {
+      id: 1,
+      title: "Anura Kumara",
+      image:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7VTKDssPY4_jwXHjFC9IZC3HETWr2VZqdrl2MqSoh0Dqy4AVrNnquO766DyekdX95OHU&usqp=CAU",
+    },
+    {
+      id: 2,
+      title: "Ranjan Ramanayake",
+      image:
+        "https://bmkltsly13vb.compat.objectstorage.ap-mumbai-1.oraclecloud.com/cdn.ft.lk/assets/uploads/image_a8cb32cb66.jpg",
+    },
+    {
+      id: 3,
+      title: "Harsha de silva",
+      image:
+        "https://pbs.twimg.com/profile_images/1392509837074907137/WkYiuVBO_400x400.jpg",
+    },
+  ];
 
   return (
     <div>
       <div className="mt-5 grid grid-rows-1 gap-5 md:grid-rows-2">
-        <input
-          type="text"
-          name="name"
-          placeholder="Candidate Name"
-          onChange={onChangeHandler}
-          value={inputValue}
-          className={`mt-2 flex h-12 w-full items-center justify-center rounded-xl border bg-white/0 p-3 text-sm outline-none ${"border-gray-200 dark:!border-white/10 dark:text-white"}`}
-        />
+        <select
+          onChange={(e) => handleAddrTypeChange(e)}
+          style={{ height: 50, borderRadius: 10 }}
+          className="mb-3 mr-2 flex items-center justify-center border border-gray-200 text-sm font-bold text-gray-600 hover:cursor-pointer dark:!bg-navy-800 dark:text-white"
+        >
+          {arr.map((ob) => (
+            <option value={ob.title}>{ob.title}</option>
+          ))}
+        </select>
         <div className="col-span-5 h-full w-full rounded-xl bg-lightPrimary dark:!bg-navy-700 2xl:col-span-6">
           <input
             type="file"

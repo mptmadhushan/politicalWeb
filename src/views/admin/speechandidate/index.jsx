@@ -30,20 +30,23 @@ const Dashboard = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [inputValue, setInputValue] = React.useState("");
   const [dataArr, setDataArr] = React.useState("");
+  const [selectedCandidate, setSelectedCandidate] = React.useState("");
 
   const onChangeHandler = (event) => {
     setInputValue(event.target.value);
   };
 
-  useEffect(async () => {
+  useEffect(() => {
+    onLoadApp();
+  }, []);
+
+  const onLoadApp = async () => {
     let imageArr = await JSON.parse(localStorage.getItem("speechData"));
     var speechData = imageArr?.filter((elements) => {
       return elements !== null;
     });
     setDataArr(speechData);
-    console.log("🚀 ~ file: index.jsx:43 ~ useEffect ~ imageArr:", speechData);
-  }, []);
-
+  };
   const handleFileSelect = (e) => {
     const chosenFiles = Array.prototype.slice.call(e.target.files);
     console.log(
@@ -66,55 +69,75 @@ const Dashboard = () => {
 
   const changeOnClick = (e) => {
     SaveDataToLocalStorage();
-    // const reqData = {
-    //   audio_file1: selectedFile[0],
-    //   audio_file2: selectedFile[1],
-    //   transcribe1: selectedFile[2],
-    //   transcribe2: selectedFile[3],
-    // };
+    const reqData = {
+      audio_file1: `data/audios/Similar 2/${selectedFile[0].name}`,
+      audio_file2: `data/audios/Similar 2/${selectedFile[1].name}`,
+      transcribe1: `data/audios/Similar 2/${selectedFile[2].name}`,
+      transcribe2: `data/audios/Similar 2/${selectedFile[3].name}`,
+    };
     const resData = {
       // userName: inputValue,
       // predicted: res.predicted_class_name,
-      userName: "inputValue",
+      userName: selectedCandidate,
       audio_dis_similarity: "0.8219662",
       audio_similarity: "0.17803382873535156",
       sentence_dis_similarity: "0.9999998",
       sentence_similarity: "1.788139343261718807",
     };
     SaveDataToLocalStorage(resData);
-    // axios
-    //   .post(`http://127.0.0.1:8000/api/v1/audio_similarity`, reqData)
-    //   .then((res) => {
-    //     console.log("🚀 ~ file: index.jsx:68 ~ .then ~ res:", res);
+    axios
+      .post(`http://127.0.0.1:8000/api/v1/audio_similarity`, reqData)
+      .then((res) => {
+        console.log("🚀 ~ file: index.jsx:68 ~ .then ~ res:", res);
 
-    //     const resData = {
-    //       userName: inputValue,
-    //       audio_dis_similarity: "0.8219662",
-    //       audio_similarity: "0.17803382873535156",
-    //       sentence_dis_similarity: "0.9999998",
-    //       sentence_similarity: "1.7881393432617188-07",
-    //       audio_dis_similarity: res.audio_dis_similarity,
-    //       audio_similarity: res.audio_similarity,
-    //       sentence_dis_similarity: res.audio_similarity,
-    //       sentence_similarity: res.sentence_similarity,
-    //     };
-    //     SaveDataToLocalStorage(resData);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+        const resData = {
+          userName: selectedCandidate,
+          audio_dis_similarity: res.audio_dis_similarity,
+          audio_similarity: res.audio_similarity,
+          sentence_dis_similarity: res.audio_similarity,
+          sentence_similarity: res.sentence_similarity,
+        };
+        SaveDataToLocalStorage(resData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
+  const arr = [
+    {
+      id: 1,
+      title: "Anura Kumara",
+      image:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7VTKDssPY4_jwXHjFC9IZC3HETWr2VZqdrl2MqSoh0Dqy4AVrNnquO766DyekdX95OHU&usqp=CAU",
+    },
+    {
+      id: 2,
+      title: "Ranjan Ramanayake",
+      image:
+        "https://bmkltsly13vb.compat.objectstorage.ap-mumbai-1.oraclecloud.com/cdn.ft.lk/assets/uploads/image_a8cb32cb66.jpg",
+    },
+    {
+      id: 3,
+      title: "Harsha de silva",
+      image:
+        "https://pbs.twimg.com/profile_images/1392509837074907137/WkYiuVBO_400x400.jpg",
+    },
+  ];
+
+  const handleAddrTypeChange = (e) => setSelectedCandidate(e.target.value);
+
   return (
     <div>
       <div className="mt-5 grid grid-rows-1 gap-5 md:grid-rows-2">
-        <input
-          type="text"
-          name="name"
-          placeholder="Candidate Name"
-          onChange={onChangeHandler}
-          value={inputValue}
-          className={`mt-2 flex h-12 w-full items-center justify-center rounded-xl border bg-white/0 p-3 text-sm outline-none ${"border-gray-200 dark:!border-white/10 dark:text-white"}`}
-        />
+        <select
+          onChange={(e) => handleAddrTypeChange(e)}
+          style={{ height: 50, borderRadius: 10 }}
+          className="mb-3 mr-2 flex items-center justify-center border border-gray-200 text-sm font-bold text-gray-600 hover:cursor-pointer dark:!bg-navy-800 dark:text-white"
+        >
+          {arr.map((ob) => (
+            <option value={ob.title}>{ob.title}</option>
+          ))}
+        </select>
         <div className="col-span-5 h-full w-full rounded-xl bg-lightPrimary dark:!bg-navy-700 2xl:col-span-6">
           <div className="flex h-full w-full flex-col items-center justify-center rounded-xl border-[2px] border-dashed border-gray-200 py-3 dark:!border-navy-700 lg:pb-0">
             <input multiple type="file" onChange={handleFileSelect} />
