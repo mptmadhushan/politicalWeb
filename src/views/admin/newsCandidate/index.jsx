@@ -56,22 +56,24 @@ const Dashboard = () => {
     const reqData = {
       news: inputValue,
     };
-    // axios
-    //   .post(`http://127.0.0.1:8000/api/v1/sentiment_news`, reqData)
-    //   .then((res) => {
-    //     const resData = {
-    //       // userName: inputValue,
-    //       // predicted: res.predicted_class_name,
-    //        userName: "inputValue",
-    //       predicted: "res.predicted_class_name",
-    //     };
-    const resData = {
-      // userName: inputValue,
-      // predicted: res.predicted_class_name,
-      userName: selectedCandidate,
-      predicted: "Environmental",
-    };
-    SaveDataToLocalStorage(resData);
+    axios
+      .post(`http://127.0.0.1:8000/api/v1/sentiment_news`, reqData)
+      .then((res) => {
+        console.log("🚀 ~ file: index.jsx:62 ~ .then ~ res:", res);
+        const resData = {
+          // userName: inputValue,
+          // predicted: res.predicted_class_name,
+          userName: selectedCandidate,
+          predicted: "res.predicted_class_name",
+        };
+        SaveDataToLocalStorage(resData);
+
+        // const resData = {
+        //   // userName: inputValue,
+        //   // predicted: res.predicted_class_name,
+        //   userName: selectedCandidate,
+        //   predicted: "Environmental",
+      });
 
     // setDataArr(res);
     //   })
